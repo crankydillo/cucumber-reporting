@@ -40,7 +40,11 @@ public class Step {
 
     public String getOutput() {
         List<String> outputList = Sequences.sequence(option(output).getOrElse(new String[]{})).realise().toList();
-        return Joiner.on("").skipNulls().join(outputList);
+        return Joiner.on("\n").skipNulls().join(outputList).trim();
+    }
+
+    public boolean hasOutput() {
+        return !getOutput().trim().isEmpty();
     }
 
     public Match getMatch() {
@@ -104,7 +108,7 @@ public class Step {
         return name;
     }
 
-    public String getName() {
+    public String getName(int stepNum) {
         String content = "";
         if (getStatus() == Util.Status.FAILED) {
             String errorMessage = result.getErrorMessage();
@@ -114,23 +118,64 @@ public class Step {
             if (getStatus() == Util.Status.UNDEFINED) {
                 errorMessage = "Mode: Not Implemented causes Failure<br/><span class=\"undefined\">This step is not yet implemented</span>";
             }
-            content = Util.result(getStatus()) + "<span class=\"step-keyword\">" + keyword + " </span><span class=\"step-name\">" + name + "</span><span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span><div class=\"step-error-message\"><pre>" + formatError(errorMessage) + "</pre></div>" + Util.closeDiv() + getImageTags();
+            content = Util.result(getStatus()) + "<span class=\"step-keyword\">" + keyword + " </span><span class=\"step-name\">" + name + stepRightHtml(stepNum, true) + "<div class='failed step-error'><div id='step-error-" + stepNum + "'  class=\"step-error-message\"><pre>" + formatError(errorMessage) + "</pre></div></div>" + Util.closeDiv() + getImageTags();
         } else if (getStatus() == Util.Status.MISSING) {
             String errorMessage = "<span class=\"missing\">Result was missing for this step</span>";
-            content = Util.result(getStatus()) + "<span class=\"step-keyword\">" + keyword + " </span><span class=\"step-name\">" + name + "</span><span class=\"step-duration\"></span><div class=\"step-error-message\"><pre>" + formatError(errorMessage) + "</pre></div>" + Util.closeDiv();
+            content = Util.result(getStatus()) + "<span class=\"step-keyword\">" + keyword + " </span><span class=\"step-name\">" + name + "</span>" + stepRightHtml(stepNum, true) + "<div class='failed step-error'><div id='step-error-" + stepNum + "' class=\"step-error-message\"><pre>" + formatError(errorMessage) + "</pre></div></div>" + Util.closeDiv();
         } else {
-            content = getNameAndDuration();
+            content = getNameAndDuration(stepNum);
         }
         return content;
     }
 
-    private String getNameAndDuration() {
+    private String stepRightHtml(int stepNum) {
+        return stepRightHtml(stepNum, false);
+    }
+ 
+    private String stepRightHtml(int stepNum, boolean hasError) {
+        String out = "<span class='step-right'>";
+        if (hasDocString()) {
+            out += expandStepDocStringHtml(stepNum);
+        }
+        if (hasOutput()) {
+            out += expandStepLogHtml(stepNum);
+        }
+        if (hasError) {
+            out += expandErrorHtml(stepNum);
+        }
+        out += "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>";
+        out += "</span>";
+        return out;
+    }
+
+    private String expandStepDocStringHtml(int stepNum) {
+        String click = "onclick='toggleDocString($(this), " + stepNum + ")'";
+        String content = "<span class='expand-button' "+ click + ">";
+        content += "- DocString</span>";
+        return content;
+    }
+
+    private String expandErrorHtml(int stepNum) {
+        String click = "onclick='toggleError($(this), " + stepNum + ")'";
+        String content = "<span class='expand-button' "+ click + ">";
+        content += "+ Error</span>";
+        return content;
+    }
+
+    private String getNameAndDuration(int stepNum) {
         String content = Util.result(getStatus())
                 + "<span class=\"step-keyword\">" + keyword
-                + " </span><span class=\"step-name\">" + name + "</span>"
-                + "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
-                + Util.closeDiv() + getImageTags();
+                + " </span><span class=\"step-name\">" + name + "</span>" +
+                stepRightHtml(stepNum) +
+                Util.closeDiv() + getImageTags();
 
+        return content;
+    }
+
+    private String expandStepLogHtml(int stepNum) {
+        String click = "onclick='toggleStepLog($(this), " + stepNum + ")'";
+        String content = "<span class='expand-button' "+ click + ">";
+        content += "+ Log</span>";
         return content;
     }
 
@@ -141,12 +186,13 @@ public class Step {
      *
      * @return string of html
      */
-    public String getDocStringOrNothing() {
+    public String getDocStringOrNothing(int stepNum) {
+        // TODO Shouldn't this HTML stuff be handled in the velocity templates?
         if (!hasDocString()) {
             return "";
         }
         return Util.result(getStatus()) +
-                "<div class=\"doc-string\">" +
+                "<div id='docstring-" + stepNum + "' class=\"doc-string\">" +
                 getDocString().getEscapedValue() +
                 Util.closeDiv() +
                 Util.closeDiv();
