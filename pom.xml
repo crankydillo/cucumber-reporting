@@ -187,5 +187,16 @@
                 <version>${powermock.version}</version>
                 <scope>test</scope>
             </dependency>
-    </dependencies>
-</project>
+        </dependencies>
+        <distributionManagement>
+            <repository>
+                <id>nexus</id>
+                <url>http://nexus.paypal.com/nexus/content/repositories/releases/</url>
+            </repository>
+            <snapshotRepository>
+                <uniqueVersion>false</uniqueVersion>
+                <id>libs-snapshots</id>
+                <url>http://nexus.paypal.com/nexus/content/repositories/snapshots/</url>
+            </snapshotRepository>
+        </distributionManagement>
+    </project>
