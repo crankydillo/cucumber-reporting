@@ -84,7 +84,7 @@ public class Element {
     }
 
     public String getTagsList() {
-        String result = "<div class=\"feature-tags\"></div>";
+        String result = "";
         if (Util.itemExists(tags)) {
             String tagList = StringUtils.join(processTags().toList().toArray(), ",");
             result = "<div class=\"feature-tags\">" + tagList + "</div>";

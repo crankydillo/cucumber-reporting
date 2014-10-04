@@ -46,7 +46,7 @@ public class DocStringTest {
 
     @Test
     public void shouldFormatDocString() {
-        assertThat(step.getDocStringOrNothing(), is("<div class=\"passed\">" +
+        assertThat(step.getDocStringOrNothing(0), is("<div class=\"passed\">" +
                                                       "<div class=\"doc-string\">" +
                                                         "X&nbsp;_&nbsp;X<br/>" +
                                                         "O&nbsp;X&nbsp;O<br/>" +

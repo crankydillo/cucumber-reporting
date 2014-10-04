@@ -81,11 +81,15 @@
 
         </script>
 <style>
-    .CodeMirror-scroll {
-      height: auto;
-      overflow-y: hidden;
-      overflow-x: auto;
-    }
+.CodeMirror-scroll {
+  height: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.title {
+  text-align: center
+}
 
 .feature-keyword{font-weight:bold;}
 .feature-description{padding-left:15px;font-style:italic;background-color:beige;}
@@ -248,13 +252,10 @@ table.data-table td {
 			</div>
 		</div>
 	</div>
-	<div id="fullwidth_gradient">
-		<div class="container_12">
-			<div class="grid_9 heading">
-				<h2 id="feature-title">Feature Result for Build: $build_number</h2>
-			</div>
-		</div>
-	</div>
+                <h2 class="title" id="feature-title">Feature Result</h2>
+                <h3 class="title">$feature.getName()</h3>
+    $feature.getDescription()
+    $feature.getTagsList()
 
 	<div class="container_12">
 		<div class="grid_12">
@@ -282,10 +283,6 @@ table.data-table td {
             </div>
 
 		<div style="color:black;">
-
-            $feature.getTagsList()
-            $feature.getName()
-            $feature.getDescription()
 
             #set ($ctr = 1)
             #foreach($scenario in $scenarios)
@@ -316,6 +313,9 @@ table.data-table td {
                   #set ($ctr = $ctr + 1)
                 #end
                 </div>
+                #if ($scenario.getKeyword() != "Background")
+                  <div>&nbsp;</div>
+                #end
             #end
 	</div>
 	</div>
