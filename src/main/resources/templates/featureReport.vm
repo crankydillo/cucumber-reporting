@@ -196,6 +196,7 @@ section {
 
 body {
   background-color: darkgreen;
+  font-size: 15px;
 }
 
 .passed {
@@ -272,6 +273,7 @@ body {
 
 .background-name {
   padding-left: 10px;
+  font-weight: 900;
 }
 
 </style>
@@ -383,7 +385,7 @@ body {
 	<div class="container_12">
 		<div class="grid_12 hr"></div>
 		<div class="grid_12 footer">
-            <p style="text-align:center;">Cucumber-JVM Jenkins Report Plugin - version: $version - $time_stamp</p>
+            <p style="text-align:center;color:lightgray;">Cucumber-JVM Jenkins Report Plugin - version: $version - $time_stamp</p>
 		</div>
 	</div>
 	<div class="clear"></div>
@@ -416,13 +418,15 @@ body {
           #if ( $step.hasDocString() || $step.hasOutput() || $step.hasErrorMessage())
           <div class='tabbable pills-right'>
               <ul class="nav nav-pills">
-                #if ( $step.hasDocString())
-                <li class="active"><a href="#doc-$ctr" data-toggle="tab">DocString</a></li>
-                #end
                 #if ( $step.hasErrorMessage() )
-                <li class='pill-error
-                  #if (!$step.hasDocString()) active#end'>
-                  <a class='pill-error' href="#err-$ctr" data-toggle="tab">Error</a></li>
+                  <li class='active'>
+                    <a class='pill-error' href="#err-$ctr" data-toggle="tab">Error</a>
+                  </li>
+                #end
+                #if ( $step.hasDocString())
+                <li #if (!$step.hasError())class='active'#end>
+                  <a href="#doc-$ctr" data-toggle="tab">DocString</a>
+                </li>
                 #end
                 #if ( $step.hasOutput() )
                 <li
