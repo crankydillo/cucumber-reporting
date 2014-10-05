@@ -2,225 +2,173 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Cucumber-JVM Html Reports - Feature: $feature.getRawName() </title>
-	<link rel="stylesheet" href="blue/css/style.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="blue/css/skin/style.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="blue/css/960.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="blue/css/reset.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="blue/css/text.css" type="text/css" media="screen" />
-	<link rel="shortcut icon" href="blue/favicon.ico" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
-        <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" rel="stylesheet" />
-        <link rel="stylesheet" href="CodeMirror-2.33/theme/eclipse.css">
-        <link rel="stylesheet" href="CodeMirror-2.33/lib/codemirror.css">
-         <script src="CodeMirror-2.33/lib/codemirror.js"></script>
-         <script src="CodeMirror-2.33/mode/xml/xml.js"></script>
+<title>Cucumber-JVM Reports - Feature: $feature.getRawName() </title>
+<link rel="shortcut icon" href="blue/favicon.ico" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" rel="stylesheet" />
 
-        <script type="text/javascript">
-            function toggleStepLog(button, stepNum) {
-               var elem = $("#step-output-" + stepNum);
-               if (elem.is(":visible")) {
-                 button.html("+ Log");
-               } else {
-                 button.html("- Log");
-               }
-               elem.toggle();
-            }
+<script type="text/javascript">
+    function toggle(expander, elem) {
+       if (elem.is(":visible")) {
+         expander.html("+ ");
+       } else {
+         expander.html("- ");
+       }
+       elem.toggle();
+    }
 
-            function toggleError(button, stepNum) {
-               var elem = $("#step-error-" + stepNum);
-               if (elem.is(":visible")) {
-                 button.html("+ Error");
-               } else {
-                 button.html("- Error");
-               }
-               elem.toggle();
-            }
+    function toggleError(button, stepNum) {
+       var elem = $("#step-error-" + stepNum);
+       if (elem.is(":visible")) {
+         button.html("+ Error");
+       } else {
+         button.html("- Error");
+       }
+       elem.toggle();
+    }
 
-            function toggleDocString(button, stepNum) {
-               var elem = $("#docstring-" + stepNum);
-               if (elem.is(":visible")) {
-                 button.html("+ DocString");
-                 elem.hide();
-               } else {
-                 button.html("- DocString");
-                 elem.css("display", "inline-block");
-               }
-            }
+    function toggleDocString(button, stepNum) {
+       var elem = $("#docstring-" + stepNum);
+       if (elem.is(":visible")) {
+         button.html("+ DocString");
+         elem.hide();
+       } else {
+         button.html("- DocString");
+         elem.css("display", "inline-block");
+       }
+    }
 
-            $(document).ready(function() {
-              $(".scenario-name").click(function() {
-                $(this).next().toggle();
-              });
-            });
+    $(document).ready(function() {
 
-            editorArray = new Array();
-
-                     function getEditor(id){
-                         var editor = CodeMirror.fromTextArea(document.getElementById(id), {
-                           mode: {name: "xml", alignCDATA: true},
-                           lineNumbers: true,
-                           theme: 'eclipse'
-                         });
-                         editorArray[id] = editor;
-                     }
-
-                      function applyArtifact(id,artifactFile){
-                          for (var i in editorArray) {
-                             var el = editorArray[i].getWrapperElement();
-                             $(el).remove();
-                          }
-
-                          $('#' + id).load(artifactFile, function(data) {
-                              getEditor(id);
-                              editorArray[id].setValue(data);
-                          });
-                          $('#' + id).dialog();
-                       }
-
-        </script>
+    });
+</script>
 <style>
-.CodeMirror-scroll {
-  height: auto;
-  overflow-y: hidden;
-  overflow-x: auto;
+/*http://stackoverflow.com/questions/18432577/stacked-tabs-in-bootstrap-3*/
+.tabs-below > .nav-pills,
+.pills-right > .nav-pills,
+.tabs-left > .nav-pills {
+  border-bottom: 0;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+}
+
+.tabs-below > .nav-pills {
+  border-top: 1px solid #ddd;
+}
+
+.tabs-below > .nav-pills > li {
+  margin-top: -1px;
+  margin-bottom: 0;
+}
+
+.tabs-below > .nav-pills > li > a {
+  -webkit-border-radius: 0 0 4px 4px;
+     -moz-border-radius: 0 0 4px 4px;
+          border-radius: 0 0 4px 4px;
+}
+
+.tabs-below > .nav-pills > li > a:hover,
+.tabs-below > .nav-pills > li > a:focus {
+  border-top-color: #ddd;
+}
+
+.tabs-left > .nav-pills > li,
+.pills-right > .nav-pills > li {
+  float: none;
+}
+
+.tabs-left > .nav-pills > li > a,
+.pills-right > .nav-pills > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+
+.tabs-left > .nav-pills {
+  float: left;
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+}
+
+.tabs-left > .nav-pills > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-pills .active > a,
+.tabs-left > .nav-pills .active > a:hover,
+.tabs-left > .nav-pills .active > a:focus {
+  *border-right-color: #ffffff;
+}
+
+.pills-right > .nav-pills {
+  float: right;
+  margin-left: 10px;
+}
+
+.nav-pills>li.active>a, 
+.nav-pills>li.active>a:hover,
+.nav-pills>li.active>a:focus {
+  background-color: #f8f8f8;
+  border: 2px solid darkgreen;
+  color: black;
+}
+
+.pill-error > .active > li > a {
+  background-color: pink;
+}
+
+.pills-right > .nav-pills > li > a {
+  margin-left: -1px;
+  border-radius: 4px;
+}
+
+.pills-right > .nav-pills > li > a:hover,
+.pills-right > .nav-pills > li > a:focus {
+  border-color: #eeeeee #eeeeee #eeeeee #dddddd;
+}
+
+.pills-right > .nav-pills .active > a,
+.pills-right > .nav-pills .active > a:hover,
+.pills-right > .nav-pills .active > a:focus {
+  *border-left-color: #ffffff;
 }
 
 .title {
   text-align: center
 }
 
-.feature-keyword{font-weight:bold;}
-.feature-description{padding-left:15px;font-style:italic;background-color:beige;}
-.feature-role{font-weight:bold;}
-.feature-action{font-weight:bold;}
-.feature-value{font-weight:bold;}
-.feature-tags{padding-top:10px;padding-left:15px;color:darkblue;}
-.scenario-keyword{font-weight:bold;padding-left:15px;}
-.scenario-scenario_name{padding-left:15px;}
-
-.scenario-name {
+.toggle {
   cursor: pointer;
+  width: 15px;
+  float: left;
 }
 
-.step-keyword{font-weight:bold;padding-left:50px;}
-.step-duration{padding-right:15px;}
-.passed{background-color:#C5D88A;}
-.failed{background-color:#D88A8A;}
-.skipped{background-color:#2DEAEC;}
-.undefined{background-color: #ebcc81;}
-
-table.stats-table {
-color:black;
-border-width: 1px;
-border-spacing: 2px;
-border-style: outset;
-border-color: gray;
-border-collapse: collapse;
-background-color: white;
-}
-table.stats-table th {
-color:black;
-border-width: 1px;
-padding: 5px;
-border-style: inset;
-border-color: gray;
-background-color: #66CCEE;
--moz-border-radius: ;
-}
-table.stats-table td {
-color:black;
-text-align: center;
-border-width: 1px;
-padding: 5px;
-border-style: inset;
-border-color: gray;
-background-color: white;
--moz-border-radius: ;
-}
-
-table.data-table {
-    color: black;
-    border-width: 1px;
-    border-spacing: 2px;
-    border-style: outset;
-    border-color: #d6d6d6;
-    border-collapse: collapse;
-    background-color: beige;
-}
-table.data-table th {
-    color:black;
-    border-width: 1px;
-    padding: 5px;
-    border-style: inset;
-    border-color: #d6d6d6;
-    background-color: #66CCEE;
-}
-table.data-table td {
-    color:black;
-    text-align: center;
-    border-width: 1px;
-    padding: 5px;
-    border-style: inset;
-    border-color: #d6d6d6;
-    background-color: beige;
-}
-
-.data {
-   padding-left:50px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
-.step-right {
-    float: right;
-}
-
-.expand-button {
-    cursor: pointer;
-    padding-left: 4px;
-    padding-right: 4px;
-    margin-right: 5px;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: lightgray;
-    background: -webkit-linear-gradient(#c0c0c0, #f0f0f0);
-    background: -o-linear-gradient(#c0c0c0, #f0f0f0);
-    background: -moz-linear-gradient(#c0c0c0, #f0f0f0); 
-    background: linear-gradient(#c0c0c0, #f0f0f0);
-}
-
-.step-error {
-  padding-left: 70px;
-}
-
-.step-error-message {
-  display:none;
+.step-info {
+  display: none;
+  cursor: pointer;
   margin: 10px 25px 10px 0px;
   padding: 5px;
-  background-color: white;
-  border-radius: 10px;
+  border-radius: 3px;
+  font-weight: normal;
 }
 
-.step-error-message {
-  display:none;
-  background-color:#FFEEEE;
-  padding-left:50px;
-  border: 1px solid #D88A8A;
-}
-
-.step-output {
-    padding-left:70px;
-    overflow: hidden;
-    background-color: beige;
-}
-
-.step-output-data {
-    margin: 10px 25px 10px 0px;
-    padding: 5px;
-    background-color: white;
-    border-radius: 10px;
+section {
+  margin: 0px 10px 0px 10px;
+  padding: 10px 10px 0px 10px;
 }
 
 .doc-string {
@@ -234,92 +182,251 @@ table.data-table td {
     font-family: "Courier New", Courier, monospace;
     font-size: 95%;
 }
+
+.navbar {
+  margin: 10px;
+}
+
+.description {
+  background-color:green;
+}
+
+.feature-tags {
+}
+
+body {
+  background-color: darkgreen;
+}
+
+.passed {
+  color: green;
+}
+
+.failed {
+  color: red;
+}
+
+.skipped {
+  color: grey;
+}
+
+.pending {
+  color: blue;
+}
+
+.undefined {
+  color: #CC9933;
+}
+
+.feature {
+  margin: 10px;
+  background-color: #f0ffeb;
+  border-radius: 4px;
+}
+
+.feature-info {
+  padding: 0px 10px 0px 10px;
+}
+
+.scenario {
+  margin: 10px 30px 10px 30px;
+  background-color: white;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.step {
+  clear: both;
+  padding: 1px 1px 1px 20px;
+}
+
+.col-split {
+  border-right: 1px solid lightgray;
+}
+
+.table td {
+  text-align: center;
+}
+
+.feature-stats {
+  border: 1px solid lightgray;
+  background-color: white;
+}
+
+.error-message {
+  border: 1px solid red;
+}
+
+.tab-content {
+  margin-right: 0px;
+}
+
+.keyword {
+  font-weight: 900;
+}
+
+.tab-pane pre {
+  margin-left: 10px;
+}
+
 </style>
 
 </head>
 <body id="top">
-	<div id="fullwidth_header">
-		<div class="container_12">
-			<h1 class="grid_4 logo"><a href="feature-overview.html" class='ie6fix'>Cucumber</a></h1>
-			<div class="grid_6" id="nav">
-				<ul>
-                    #if($fromJenkins)
-                          <li><a href="${jenkins_base}job/$build_project/$build_number">Back To Jenkins</a></li>
+<div class="bs-example">
+    <nav role="navigation" class="navbar navbar-default">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <p class="navbar-brand">Cucumber Feature Report</p>
+        </div>
+        <!-- Collection of nav links and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Tags</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class='feature'>
+<section>
+  <table class="table feature-stats">
+    <thead>
+      <tr>
+        <th class='col-split'>Feature</th>
+        <th align='right'>Scenarios</th>
+        <th>Passed</th>
+        <th class='col-split'>Failed</th>
+        <th>Steps</th>
+        <th>Passed</th>
+        <th>Failed</th>
+        <th>Skipped</th>
+        <th class='col-split'>Pending</th>
+        <th class='col-split'>Duration</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tr>
+      <td style='text-align:left; font-weight:bold;' class='col-split'>$feature.getName()</td>
+      <td id="stats-number-scenarios-$sf">$feature.getNumberOfScenarios()</td>
+      <td id="stats-number-scenarios-passed-$sf">$feature.getNumberOfScenariosPassed()</td>
+      <td class='col-split' id="stats-number-scenarios-failed-$sf">$feature.getNumberOfScenariosFailed()</td>
+      <td id="stats-number-steps-$sf">$feature.getNumberOfSteps()</td>
+      <td id="stats-number-steps-passed-$sf">$feature.getNumberOfPasses()</td>
+      <td id="stats-number-steps-failed-$sf">$feature.getNumberOfFailures()</td>
+      <td id="stats-number-steps-skipped-$sf">$feature.getNumberOfSkipped()</td>
+      <td class='col-split' id="stats-number-steps-pending-$sf">$feature.getNumberOfPending()</td>
+      <td class='col-split'  id="stats-duration-$sf">$feature.getDurationOfSteps()</td>
+      <td style="font-weight: bold; text-align:left" id="stats-status-$sf"
+        class="$feature.getRawStatus()">$feature.getRawStatus().toUpperCase()</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <div class='feature-info'>
+    #if ($feature.getDescription() != "")
+      Description: $feature.getDescription()
+    #end
+    #if (!($feature.getTagsList().isEmpty()))
+      Tags: $feature.getTagsList().get(0)
+    #end
+  </div>
+</section>
+
+<section>
+
+    #set ($ctr = 1)
+    #foreach($scenario in $scenarios)
+    <div class='scenario'>
+    #if (!($scenario.getTagsList().isEmpty()))
+      $scenario.getTagsList()
+    #end
+    <div class='scenario-name'>
+      <div class='toggle' onclick='toggle($(this), $(this).parent().next())'>- </div>
+      $scenario.getName()
+    </div>
+    <div class='scenario-body'>
+      #foreach($step in $scenario.getSteps().toList())
+        <div class='step'>
+          #if ($step.hasDocString() || $step.hasErrorMessage() || $step.hasOutput())
+            <div class='toggle' onclick='toggle($(this), $(this).next().next())'>+ </div>
+          #else
+          <div class='toggle'>&nbsp;</div>#end<span
+            class='$step.getStatus().toString().toLowerCase()'><span
+          class='keyword'>$step.getKeyword()</span> $step.getName($ctr)</span>
+          <div class='step-info'>
+            #if($step.hasRows())
+              <div class="data $step.getDataTableClass()">
+                <table class="data-table">
+                  #foreach($row in $step.getRows())
+                  <tr>
+                    #foreach($cell in $row.getCells())
+                    <td>$esc.html($cell)</td>
                     #end
-					<li><a href="tag-overview.html">Tag Overview</a></li>
-					<li><a href="feature-overview.html">Feature Overview</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-                <h2 class="title" id="feature-title">Feature Result</h2>
-                <h3 class="title">$feature.getName()</h3>
-    $feature.getDescription()
-    $feature.getTagsList()
-
-	<div class="container_12">
-		<div class="grid_12">
-
-            <div>
-                <table class="stats-table">
-                    #include("/templates/tableHeader.vm")
-                    #set($sf = $feature.getRawName())
-
-                    <tr>
-                        <td><a id="stats-$sf" href="$feature.getFileName()">$feature.getRawName()</a></td>
-                        <td id="stats-number-scenarios-$sf">$feature.getNumberOfScenarios()</td>
-                        <td id="stats-number-scenarios-passed-$sf">$feature.getNumberOfScenariosPassed()</td>
-                        <td id="stats-number-scenarios-failed-$sf">$feature.getNumberOfScenariosFailed()</td>
-                        <td id="stats-number-steps-$sf">$feature.getNumberOfSteps()</td>
-                        <td id="stats-number-steps-passed-$sf">$feature.getNumberOfPasses()</td>
-                        <td id="stats-number-steps-failed-$sf">$feature.getNumberOfFailures()</td>
-                        <td id="stats-number-steps-skipped-$sf">$feature.getNumberOfSkipped()</td>
-                        <td id="stats-number-steps-pending-$sf">$feature.getNumberOfPending()</td>
-                        <td id="stats-duration-$sf">$feature.getDurationOfSteps()</td>
-                        <td id="stats-status-$sf" style="background-color: $report_status_colour;">$feature.getRawStatus()</td></tr>
-
-                </table>
-
-            </div>
-
-		<div style="color:black;">
-
-            #set ($ctr = 1)
-            #foreach($scenario in $scenarios)
-                $scenario.getTagsList()
-                <div class='scenario-name'>$scenario.getName()</div>
-                <div class='scenario-body'>
-                #foreach($step in $scenario.getSteps().toList())
-                    $step.getName($ctr)
-                    $step.getDocStringOrNothing($ctr)
-                    #if($step.hasRows())
-                        <div class="data $step.getDataTableClass()">
-                        <table class="data-table">
-                      #foreach($row in $step.getRows())
-                       <tr>
-                           #foreach($cell in $row.getCells())
-                           <td>$esc.html($cell)</td>
-                           #end
-                       </tr>
-                      #end
-                      </table>
-                        </div>
-                    #end
-                  #if ( $step.hasOutput() )
-                    <div id='step-output-$ctr' class="step-output" style="display:none">
-                      <div class="step-output-data"><pre>$step.getOutput()</pre></div>
-                    </div>
+                  </tr>
                   #end
-                  #set ($ctr = $ctr + 1)
-                #end
-                </div>
-                #if ($scenario.getKeyword() != "Background")
-                  <div>&nbsp;</div>
-                #end
+                </table>
+              </div>
             #end
-	</div>
-	</div>
-
+            #if ( $step.hasDocString() || $step.hasOutput() || $step.hasErrorMessage())
+            <div class='tabbable pills-right'>
+                <ul class="nav nav-pills">
+                  #if ( $step.hasDocString())
+                  <li class="active"><a href="#doc-$ctr" data-toggle="tab">DocString</a></li>
+                  #end
+                  #if ( $step.hasErrorMessage() )
+                  <li class='pill-error
+                    #if (!$step.hasDocString()) active#end'>
+                    <a class='pill-error' href="#err-$ctr" data-toggle="tab">Error</a></li>
+                  #end
+                  #if ( $step.hasOutput() )
+                  <li
+                    #if (!$step.hasDocString() && !$step.hasErrorMessage()) class='active'#end>
+                    <a href="#out-$ctr" data-toggle="tab">Output</a></li>
+                  #end
+                </ul>
+              <div class="tab-content">
+                #if ( $step.hasDocString())
+                  <div class="tab-pane active"
+                    id="doc-$ctr"><pre style='border: 1px solid
+darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
+                #end
+                #if ( $step.hasErrorMessage() )
+                  <div 
+                    class="tab-pane
+                    #if (!$step.hasDocString()) active#end" id="err-$ctr">
+                    <pre style='border: 1px solid red'>$step.getErrorMessage()</pre>
+                  </div>
+                #end
+                #if ( $step.hasOutput() )
+                  <div class="tab-pane 
+                    #if (!$step.hasDocString() && !$step.hasErrorMessage()) active#end" 
+                    id="out-$ctr"><pre>$step.getOutput()</pre></div>
+                #end
+              </div>
+            </div>
+            #end
+          </div>
+          #set ($ctr = $ctr + 1)
+        </div>
+      #end
+    </div>
+    #if ($scenario.getKeyword() != "Background")
+    <div>&nbsp;</div>
+    #end
+  </div>
+  #end
+  </div>
+</div>
+</section>
 
 	<div class="container_12">
 		<div class="grid_12 hr"></div>

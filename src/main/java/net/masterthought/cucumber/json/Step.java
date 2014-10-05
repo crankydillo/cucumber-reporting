@@ -27,7 +27,10 @@ public class Step {
     private DocString doc_string;
 
     public Step() {
+    }
 
+    public String getKeyword() {
+      return keyword;
     }
 
     public DocString getDocString() {
@@ -38,6 +41,10 @@ public class Step {
         return rows;
     }
 
+    public String getErrorMessage() {
+      return result.getErrorMessage();
+    }
+
     public String getOutput() {
         List<String> outputList = Sequences.sequence(option(output).getOrElse(new String[]{})).realise().toList();
         return Joiner.on("\n").skipNulls().join(outputList).trim();
@@ -45,6 +52,10 @@ public class Step {
 
     public boolean hasOutput() {
         return !getOutput().trim().isEmpty();
+    }
+
+    public boolean hasErrorMessage() {
+        return !(getErrorMessage().trim().equals(""));
     }
 
     public Match getMatch() {
@@ -109,6 +120,8 @@ public class Step {
     }
 
     public String getName(int stepNum) {
+      return name;
+      /*
         String content = "";
         if (getStatus() == Util.Status.FAILED) {
             String errorMessage = result.getErrorMessage();
@@ -126,6 +139,7 @@ public class Step {
             content = getNameAndDuration(stepNum);
         }
         return content;
+        */
     }
 
     private String stepRightHtml(int stepNum) {
@@ -191,11 +205,7 @@ public class Step {
         if (!hasDocString()) {
             return "";
         }
-        return Util.result(getStatus()) +
-                "<div id='docstring-" + stepNum + "' class=\"doc-string\">" +
-                getDocString().getEscapedValue() +
-                Util.closeDiv() +
-                Util.closeDiv();
+        return getDocString().getEscapedValue();
     }
 
     private String formatError(String errorMessage) {

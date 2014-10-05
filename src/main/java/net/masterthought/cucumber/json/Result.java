@@ -19,6 +19,9 @@ public class Result {
     }
 
     public String getErrorMessage() {
-        return error_message;
+      if (error_message == null) {
+        return "";
+      }
+      return error_message;
     }
 }

@@ -9,6 +9,7 @@ import net.masterthought.cucumber.util.Util;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Feature {
@@ -58,13 +59,11 @@ public class Feature {
         return Sequences.sequence(tags).realise();
     }
 
-    public String getTagsList() {
-        String result = "<div class=\"feature-tags\"></div>";
-        if (Util.itemExists(tags)) {
-            String tagList = StringUtils.join(getTagList().toList().toArray(), ",");
-            result = "<div class=\"feature-tags\">" + tagList + "</div>";
+    public List<String> getTagsList() {
+        if (!Util.itemExists(tags)) {
+            return Collections.<String>emptyList();
         }
-        return result;
+        return getTagList().toList();
     }
 
     public Util.Status getStatus() {
@@ -86,14 +85,10 @@ public class Feature {
 
     public String getDescription() {
         String result = "";
-        if (Util.itemExists(description)) {
-            String content = description.replaceFirst("As an", "<span class=\"feature-role\">As an</span>");
-            content = content.replaceFirst("I want to", "<span class=\"feature-action\">I want to</span>");
-            content = content.replaceFirst("So that", "<span class=\"feature-value\">So that</span>");
-            content = content.replaceAll("\n", "<br/>");
-            result = "<div class=\"feature-description\">" + content + "</div>";
+        if (!Util.itemExists(description)) {
+            return "";
         }
-        return result;
+        return description;
     }
 
     public int getNumberOfScenarios() {

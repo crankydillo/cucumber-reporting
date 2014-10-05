@@ -10,6 +10,7 @@ import net.masterthought.cucumber.util.Util;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.googlecode.totallylazy.Option.option;
@@ -83,13 +84,11 @@ public class Element {
         return getTags().map(Tag.functions.getName());
     }
 
-    public String getTagsList() {
-        String result = "";
-        if (Util.itemExists(tags)) {
-            String tagList = StringUtils.join(processTags().toList().toArray(), ",");
-            result = "<div class=\"feature-tags\">" + tagList + "</div>";
+    public List<String> getTagsList() {
+        if (!Util.itemExists(tags)) {
+            return Collections.<String>emptyList();
         }
-        return result;
+        return processTags().toList();
     }
 
     public static class functions {
