@@ -32,6 +32,28 @@ public class Feature {
         return Sequences.sequence(elements).realise();
     }
 
+    public List<Scenario> getScenarios() {
+        List<Scenario> scenarios = new ArrayList<Scenario>();
+        if (elements != null) {
+            for (int i = 0; i < elements.length; i++) {
+                Element curr = elements[i];
+                if (curr.getKeyword().equalsIgnoreCase("background") &&
+                        i < elements.length) {
+                    Element next = elements[++i];
+                    if (next.getKeyword().toLowerCase().indexOf("scenario") != -1) {
+                        scenarios.add(new Scenario(curr, next));
+                    } else {
+                        scenarios.add(new Scenario(null, curr));
+                        scenarios.add(new Scenario(null, next));
+                    }
+                } else {
+                    scenarios.add(new Scenario(null, curr));
+                }
+            }
+        }
+        return scenarios;
+    }
+
     public String getFileName() {
         List<String> matches = new ArrayList<String>();
         for (String line : Splitter.onPattern("/|\\\\").split(uri)) {

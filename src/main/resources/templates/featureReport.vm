@@ -229,6 +229,7 @@ body {
 }
 
 .scenario {
+  padding: 5px;
   margin: 10px 30px 10px 30px;
   background-color: white;
   border-radius: 4px;
@@ -267,6 +268,10 @@ body {
 
 .tab-pane pre {
   margin-left: 10px;
+}
+
+.background-name {
+  padding-left: 10px;
 }
 
 </style>
@@ -343,86 +348,33 @@ body {
 
 <section>
 
-    #set ($ctr = 1)
-    #foreach($scenario in $scenarios)
+  #set ($ctr = 1)
+  #foreach($scenarioInfo in $scenarios)
     <div class='scenario'>
-    #if (!($scenario.getTagsList().isEmpty()))
-      $scenario.getTagsList()
-    #end
-    <div class='scenario-name'>
-      <div class='toggle' onclick='toggle($(this), $(this).parent().next())'>- </div>
-      $scenario.getName()
-    </div>
-    <div class='scenario-body'>
-      #foreach($step in $scenario.getSteps().toList())
-        <div class='step'>
-          #if ($step.hasDocString() || $step.hasErrorMessage() || $step.hasOutput())
-            <div class='toggle' onclick='toggle($(this), $(this).next().next())'>+ </div>
-          #else
-          <div class='toggle'>&nbsp;</div>#end<span
-            class='$step.getStatus().toString().toLowerCase()'><span
-          class='keyword'>$step.getKeyword()</span> $step.getName($ctr)</span>
-          <div class='step-info'>
-            #if($step.hasRows())
-              <div class="data $step.getDataTableClass()">
-                <table class="data-table">
-                  #foreach($row in $step.getRows())
-                  <tr>
-                    #foreach($cell in $row.getCells())
-                    <td>$esc.html($cell)</td>
-                    #end
-                  </tr>
-                  #end
-                </table>
-              </div>
-            #end
-            #if ( $step.hasDocString() || $step.hasOutput() || $step.hasErrorMessage())
-            <div class='tabbable pills-right'>
-                <ul class="nav nav-pills">
-                  #if ( $step.hasDocString())
-                  <li class="active"><a href="#doc-$ctr" data-toggle="tab">DocString</a></li>
-                  #end
-                  #if ( $step.hasErrorMessage() )
-                  <li class='pill-error
-                    #if (!$step.hasDocString()) active#end'>
-                    <a class='pill-error' href="#err-$ctr" data-toggle="tab">Error</a></li>
-                  #end
-                  #if ( $step.hasOutput() )
-                  <li
-                    #if (!$step.hasDocString() && !$step.hasErrorMessage()) class='active'#end>
-                    <a href="#out-$ctr" data-toggle="tab">Output</a></li>
-                  #end
-                </ul>
-              <div class="tab-content">
-                #if ( $step.hasDocString())
-                  <div class="tab-pane active"
-                    id="doc-$ctr"><pre style='border: 1px solid
-darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
-                #end
-                #if ( $step.hasErrorMessage() )
-                  <div 
-                    class="tab-pane
-                    #if (!$step.hasDocString()) active#end" id="err-$ctr">
-                    <pre style='border: 1px solid red'>$step.getErrorMessage()</pre>
-                  </div>
-                #end
-                #if ( $step.hasOutput() )
-                  <div class="tab-pane 
-                    #if (!$step.hasDocString() && !$step.hasErrorMessage()) active#end" 
-                    id="out-$ctr"><pre>$step.getOutput()</pre></div>
-                #end
-              </div>
-            </div>
-            #end
-          </div>
-          #set ($ctr = $ctr + 1)
-        </div>
+      #if (!($scenarioInfo.getScenario().getTagsList().isEmpty()))
+        $scenarioInfo.getScenario().getTagsList()
       #end
+
+      <h4>
+        <div class='toggle' onclick='toggle($(this), $(this).parent().next())'>- </div>
+        $scenarioInfo.title()
+      </h4>
+
+      <div>
+        #if ($scenarioInfo.hasBackground())
+          #if (!($scenarioInfo.getBackground().getTagsList().isEmpty()))
+            $scenarioInfo.getBackground().getTagsList()
+          #end
+          <div class='background-name'>
+            <div class='toggle' onclick='toggle($(this), $(this).parent().next())'>- </div>
+            $scenarioInfo.getBackground().getName()
+          </div>
+          #scenario($scenarioInfo.getBackground())
+          <div>&nbsp;</div>
+        #end
+        #scenario($scenarioInfo.getScenario())
+      </div>
     </div>
-    #if ($scenario.getKeyword() != "Background")
-    <div>&nbsp;</div>
-    #end
-  </div>
   #end
   </div>
 </div>
@@ -436,3 +388,72 @@ darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
 	</div>
 	<div class="clear"></div>
 </body>
+
+#macro( scenario $scenario)
+  <div class='scenario-body'>
+    #foreach($step in $scenario.getSteps().toList())
+      <div class='step'>
+        #if ($step.hasDocString() || $step.hasErrorMessage() || $step.hasOutput())
+          <div class='toggle' onclick='toggle($(this), $(this).next().next())'>+ </div>
+        #else
+        <div class='toggle'>&nbsp;</div>#end<span
+          class='$step.getStatus().toString().toLowerCase()'><span
+        class='keyword'>$step.getKeyword()</span> $step.getName($ctr)</span>
+        <div class='step-info'>
+          #if($step.hasRows())
+            <div class="data $step.getDataTableClass()">
+              <table class="data-table">
+                #foreach($row in $step.getRows())
+                <tr>
+                  #foreach($cell in $row.getCells())
+                  <td>$esc.html($cell)</td>
+                  #end
+                </tr>
+                #end
+              </table>
+            </div>
+          #end
+          #if ( $step.hasDocString() || $step.hasOutput() || $step.hasErrorMessage())
+          <div class='tabbable pills-right'>
+              <ul class="nav nav-pills">
+                #if ( $step.hasDocString())
+                <li class="active"><a href="#doc-$ctr" data-toggle="tab">DocString</a></li>
+                #end
+                #if ( $step.hasErrorMessage() )
+                <li class='pill-error
+                  #if (!$step.hasDocString()) active#end'>
+                  <a class='pill-error' href="#err-$ctr" data-toggle="tab">Error</a></li>
+                #end
+                #if ( $step.hasOutput() )
+                <li
+                  #if (!$step.hasDocString() && !$step.hasErrorMessage()) class='active'#end>
+                  <a href="#out-$ctr" data-toggle="tab">Output</a></li>
+                #end
+              </ul>
+            <div class="tab-content">
+              #if ( $step.hasDocString())
+                <div class="tab-pane active"
+                  id="doc-$ctr"><pre style='border: 1px solid
+darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
+              #end
+              #if ( $step.hasErrorMessage() )
+                <div 
+                  class="tab-pane
+                  #if (!$step.hasDocString()) active#end" id="err-$ctr">
+                  <pre style='border: 1px solid red'>$step.getErrorMessage()</pre>
+                </div>
+              #end
+              #if ( $step.hasOutput() )
+                <div class="tab-pane 
+                  #if (!$step.hasDocString() && !$step.hasErrorMessage()) active#end" 
+                  id="out-$ctr"><pre>$step.getOutput()</pre></div>
+              #end
+            </div>
+          </div>
+          #end
+        </div>
+      </div>
+    #end
+  </div>
+
+#end

@@ -114,7 +114,7 @@ public class ReportBuilder {
                 contextMap.putAll(getGeneralParameters());
                 contextMap.put("feature", feature);
                 contextMap.put("report_status_colour", ri.getReportStatusColour(feature));
-                contextMap.put("scenarios", feature.getElements().toList());
+                contextMap.put("scenarios", feature.getScenarios());
                 contextMap.put("time_stamp", ri.timeStamp());
                 contextMap.put("artifactsEnabled", ConfigurationOptions.artifactsEnabled());
                 contextMap.put("esc", new EscapeTool());
