@@ -159,9 +159,10 @@ table.data-table td {
                     <div><a href="$scenario.getParentFeatureUri()">View Feature File</a></div>
                 $scenario.getScenario().getTagsList()
                 $scenario.getScenario().getName()
+                #set($ctr = 1)
                 #foreach($step in $scenario.getScenario().getSteps().toList())
-                  $step.getName()
-                    $step.getDocStringOrNothing()
+                  $step.getName($ctr)
+                    $step.getDocStringOrNothing($ctr)
                     #if($step.hasRows())
                         <div class="data $step.getDataTableClass()">
                         <table class="data-table">
@@ -175,7 +176,8 @@ table.data-table td {
                       </table>
                         </div>
                     #end
-                <div class="output-data">$step.getOutput()</div>
+                  <div class="output-data">$step.getOutput()</div>
+                  #set($ctr = $ctr + 1)
                 #end
                 </div>
             #end

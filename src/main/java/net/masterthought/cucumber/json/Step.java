@@ -120,8 +120,6 @@ public class Step {
     }
 
     public String getName(int stepNum) {
-      return name;
-      /*
         String content = "";
         if (getStatus() == Util.Status.FAILED) {
             String errorMessage = result.getErrorMessage();
@@ -139,7 +137,6 @@ public class Step {
             content = getNameAndDuration(stepNum);
         }
         return content;
-        */
     }
 
     private String stepRightHtml(int stepNum) {

@@ -168,7 +168,7 @@
 
 section {
   margin: 0px 10px 0px 10px;
-  padding: 10px 10px 0px 10px;
+  padding: 10px 2px 0px 2px;
 }
 
 .doc-string {
@@ -196,28 +196,15 @@ section {
 
 body {
   background-color: darkgreen;
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.passed {
-  color: green;
-}
-
-.failed {
-  color: red;
-}
-
-.skipped {
-  color: grey;
-}
-
-.pending {
-  color: blue;
-}
-
-.undefined {
-  color: #CC9933;
-}
+.passed { color: green; }
+.failed { color: red; }
+.skipped { color: grey; }
+.pending { color: blue; }
+.undefined { color: #CC9933; }
+.missing { color: #CC9933; }
 
 .feature {
   margin: 10px;
@@ -231,7 +218,7 @@ body {
 
 .scenario {
   padding: 5px;
-  margin: 10px 30px 10px 30px;
+  margin: 10px 15px 10px 15px;
   background-color: white;
   border-radius: 4px;
   font-weight: 500;
@@ -244,10 +231,6 @@ body {
 
 .col-split {
   border-right: 1px solid lightgray;
-}
-
-.table td {
-  text-align: center;
 }
 
 .feature-stats {
@@ -279,8 +262,8 @@ body {
 </style>
 
 </head>
-<body id="top">
-<div class="bs-example">
+<body>
+<div>
     <nav role="navigation" class="navbar navbar-default">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -295,8 +278,8 @@ body {
         <!-- Collection of nav links and other content for toggling -->
         <div id="navbarCollapse" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Tags</a></li>
+                <li><a href="feature-overview.html">Features</a></li>
+                <li><a href="tag-overview.html">Tags</a></li>
             </ul>
         </div>
     </nav>
@@ -308,30 +291,30 @@ body {
     <thead>
       <tr>
         <th class='col-split'>Feature</th>
-        <th align='right'>Scenarios</th>
-        <th>Passed</th>
-        <th class='col-split'>Failed</th>
-        <th>Steps</th>
-        <th>Passed</th>
-        <th>Failed</th>
-        <th>Skipped</th>
-        <th class='col-split'>Pending</th>
-        <th class='col-split'>Duration</th>
+        <th class='text-right'>Scenarios</th>
+        <th class='text-right'>Passed</th>
+        <th class='col-split text-right'>Failed</th>
+        <th class='text-right'>Steps</th>
+        <th class='text-right'>Passed</th>
+        <th class='text-right'>Failed</th>
+        <th class='text-right'>Skipped</th>
+        <th class='col-split text-right'>Pending</th>
+        <th class='col-split text-right'>Duration</th>
         <th>Status</th>
       </tr>
     </thead>
     <tr>
-      <td style='text-align:left; font-weight:bold;' class='col-split'>$feature.getName()</td>
-      <td id="stats-number-scenarios-$sf">$feature.getNumberOfScenarios()</td>
-      <td id="stats-number-scenarios-passed-$sf">$feature.getNumberOfScenariosPassed()</td>
-      <td class='col-split' id="stats-number-scenarios-failed-$sf">$feature.getNumberOfScenariosFailed()</td>
-      <td id="stats-number-steps-$sf">$feature.getNumberOfSteps()</td>
-      <td id="stats-number-steps-passed-$sf">$feature.getNumberOfPasses()</td>
-      <td id="stats-number-steps-failed-$sf">$feature.getNumberOfFailures()</td>
-      <td id="stats-number-steps-skipped-$sf">$feature.getNumberOfSkipped()</td>
-      <td class='col-split' id="stats-number-steps-pending-$sf">$feature.getNumberOfPending()</td>
-      <td class='col-split'  id="stats-duration-$sf">$feature.getDurationOfSteps()</td>
-      <td style="font-weight: bold; text-align:left" id="stats-status-$sf"
+      <td style='font-weight:bold;' class='col-split'>$feature.getRawName()</td>
+      <td class='text-right'>$feature.getNumberOfScenarios()</td>
+      <td class='text-right'>$feature.getNumberOfScenariosPassed()</td>
+      <td class='col-split text-right'>$feature.getNumberOfScenariosFailed()</td>
+      <td class='text-right'>$feature.getNumberOfSteps()</td>
+      <td class='text-right'>$feature.getNumberOfPasses()</td>
+      <td class='text-right'>$feature.getNumberOfFailures()</td>
+      <td class='text-right'>$feature.getNumberOfSkipped()</td>
+      <td class='col-split text-right'>$feature.getNumberOfPending()</td>
+      <td class='col-split text-right'>$feature.getDurationOfSteps()</td>
+      <td style="font-weight: bold"
         class="$feature.getRawStatus()">$feature.getRawStatus().toUpperCase()</td>
     </tr>
   </table>
@@ -350,7 +333,6 @@ body {
 
 <section>
 
-  #set ($ctr = 1)
   #foreach($scenarioInfo in $scenarios)
     <div class='scenario'>
       #if (!($scenarioInfo.getScenario().getTagsList().isEmpty()))
@@ -359,7 +341,9 @@ body {
 
       <h4>
         <div class='toggle' onclick='toggle($(this), $(this).parent().next())'>- </div>
-        $scenarioInfo.title()
+        <span class='$scenarioInfo.getStatus().toString().toLowerCase()'>
+          $scenarioInfo.title()
+        </span>
       </h4>
 
       <div>
@@ -368,8 +352,12 @@ body {
             $scenarioInfo.getBackground().getTagsList()
           #end
           <div class='background-name'>
-            <div class='toggle' onclick='toggle($(this), $(this).parent().next())'>- </div>
-            $scenarioInfo.getBackground().getName()
+            <div class='toggle'
+              onclick='toggle($(this), $(this).parent().next())'>- </div>
+            <span
+              class='$scenarioInfo.getBackground().getStatus().toString().toLowerCase()'>
+              Background: $scenarioInfo.getBackground().getRawName()
+            </span>
           </div>
           #scenario($scenarioInfo.getBackground())
           <div>&nbsp;</div>
@@ -382,25 +370,33 @@ body {
 </div>
 </section>
 
-	<div class="container_12">
-		<div class="grid_12 hr"></div>
-		<div class="grid_12 footer">
-            <p style="text-align:center;color:lightgray;">Cucumber-JVM Jenkins Report Plugin - version: $version - $time_stamp</p>
-		</div>
-	</div>
-	<div class="clear"></div>
+<div class="row">
+  <div class="col-md-12 text-center">
+    <p style="color:lightgray;">Cucumber-JVM Jenkins Report Plugin - version: $version - $time_stamp</p>
+  </div>
+</div>
+
 </body>
 
 #macro( scenario $scenario)
   <div class='scenario-body'>
+    #set($ctr = 1)
     #foreach($step in $scenario.getSteps().toList())
       <div class='step'>
-        #if ($step.hasDocString() || $step.hasErrorMessage() || $step.hasOutput())
-          <div class='toggle' onclick='toggle($(this), $(this).next().next())'>+ </div>
-        #else
-        <div class='toggle'>&nbsp;</div>#end<span
-          class='$step.getStatus().toString().toLowerCase()'><span
-        class='keyword'>$step.getKeyword()</span> $step.getName($ctr)</span>
+        <div class='row'>
+          <div class='col-md-11'>
+            #if ($step.hasDocString() || $step.hasErrorMessage() || $step.hasOutput())
+              <div class='toggle' onclick='toggle($(this),
+                $(this).parent().parent().next())'>+ </div>
+            #else
+            <div class='toggle'>&nbsp;</div>#end<span
+              class='$step.getStatus().toString().toLowerCase()'><span
+            class='keyword'>$step.getKeyword()</span> $step.getRawName()</span>
+          </div>
+          <div class='col-md-1 text-right'>
+            $Util.formatDuration($step.getDuration())
+          </div>
+        </div>
         <div class='step-info'>
           #if($step.hasRows())
             <div class="data $step.getDataTableClass()">
@@ -438,7 +434,7 @@ body {
               #if ( $step.hasDocString())
                 <div class="tab-pane active"
                   id="doc-$ctr"><pre style='border: 1px solid
-darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
+darkgreen'>$step.getDocStringOrNothing()</pre></div>
               #end
               #if ( $step.hasErrorMessage() )
                 <div 
@@ -457,6 +453,7 @@ darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
           #end
         </div>
       </div>
+      #set($ctr = $ctr + 1)
     #end
   </div>
 

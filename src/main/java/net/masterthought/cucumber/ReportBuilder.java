@@ -112,6 +112,7 @@ public class ReportBuilder {
                 Template featureResult = ve.getTemplate("templates/featureReport.vm");
                 VelocityContextMap contextMap = VelocityContextMap.of(new VelocityContext());
                 contextMap.putAll(getGeneralParameters());
+                contextMap.put("Util", Util.class);
                 contextMap.put("feature", feature);
                 contextMap.put("report_status_colour", ri.getReportStatusColour(feature));
                 contextMap.put("scenarios", feature.getScenarios());

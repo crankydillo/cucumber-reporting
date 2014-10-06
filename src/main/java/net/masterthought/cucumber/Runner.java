@@ -18,7 +18,7 @@ public class Runner {
         File outputDir = new File("output");
 
         ReportBuilder reportBuilder = new ReportBuilder(list, outputDir, "", "97", "cucumber-jvm", false, false, 
-                true, true, false, "", false);
+                false, true, false, "", false);
         reportBuilder.generateReports();
 
     }
