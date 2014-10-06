@@ -47,7 +47,7 @@ body {
 }
 
 section {
-  margin: 0px 10px 0px 10px;
+  margin: 10px 10px 0px 10px;
   padding: 10px 10px 0px 10px;
 }
 
@@ -55,15 +55,23 @@ section {
   margin: 10px;
   background-color: #f0ffeb;
   border-radius: 4px;
+  padding: 5px;
 }
 
 .feature-stats {
-  border: 1px solid lightgray;
   background-color: white;
 }
 
 .col-split {
-  border-right: 1px solid lightgray;
+  border-right: 2px solid lightgray;
+}
+
+.table {
+  border: 2px solid gray;
+}
+
+.table thead > tr > th { 
+  border-bottom: 2px solid gray;
 }
 
 </style>
@@ -208,10 +216,9 @@ section {
 </div>
 </div>
 </section>
-<br/>
 
 <section>
-  <table class="table feature-stats">
+  <table class="table table-striped feature-stats">
     <thead>
       <tr>
         <th class='col-split'>Feature</th>
@@ -245,7 +252,7 @@ section {
         class="$feature.getRawStatus()">$feature.getRawStatus().toUpperCase()</td>
     </tr>
     #end
-    <tr>
+    <tr style="font-weight: bolder; border-top: 2px solid grey">
       <td class='col-split'>Totals</td>
       <td class='text-right'>$total_scenarios</td>
       <td class='text-right'>$scenarios_passed</td>
