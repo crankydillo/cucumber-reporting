@@ -384,7 +384,7 @@ body {
     #foreach($step in $scenario.getSteps().toList())
       <div class='step'>
         <div class='row'>
-          <div class='col-md-11'>
+          <div class='col-md-10'>
             #if ($step.hasDocString() || $step.hasErrorMessage() || $step.hasOutput())
               <div class='toggle' onclick='toggle($(this),
                 $(this).parent().parent().next())'>+ </div>
@@ -393,7 +393,7 @@ body {
               class='$step.getStatus().toString().toLowerCase()'><span
             class='keyword'>$step.getKeyword()</span> $step.getRawName()</span>
           </div>
-          <div class='col-md-1 text-right'>
+          <div class='col-md-2 text-right'>
             $Util.formatDuration($step.getDuration())
           </div>
         </div>
