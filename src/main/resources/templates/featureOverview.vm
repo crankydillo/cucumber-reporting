@@ -91,7 +91,7 @@ section {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    innerSize: '50%',
+                    innerSize: '40%',
                     dataLabels: {
                         enabled: true,
                         color: '#000000',
@@ -144,7 +144,7 @@ section {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    innerSize: '50%',
+                    innerSize: '40%',
                     dataLabels: {
                         enabled: true,
                         color: '#000000',
