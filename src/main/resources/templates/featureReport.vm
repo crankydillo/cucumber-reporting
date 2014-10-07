@@ -195,7 +195,7 @@ section {
 }
 
 body {
-  background-color: darkgreen;
+  background-color: #204000;
   font-size: 14px;
 }
 
