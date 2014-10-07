@@ -441,7 +441,7 @@ body {
               #if ( $step.hasDocString())
                 <div class="tab-pane active"
                   id="doc-$ctr"><pre style='border: 1px solid
-darkgreen'>$step.getDocStringOrNothing()</pre></div>
+darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
               #end
               #if ( $step.hasErrorMessage() )
                 <div 
