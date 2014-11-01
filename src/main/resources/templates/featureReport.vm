@@ -338,8 +338,10 @@ body {
   </div>
 </section>
 
+<!-- Not a huge fan of using this global counter, but I couldn't get anything
+else to work.  See its use below. -->
+#set($ctr = 1)
 <section>
-
   #foreach($scenarioInfo in $scenarios)
     <div class='scenario'>
       #if (!($scenarioInfo.getScenario().getTagsList().isEmpty()))
@@ -373,8 +375,6 @@ body {
       </div>
     </div>
   #end
-  </div>
-</div>
 </section>
 
 <div class="row">
@@ -385,9 +385,8 @@ body {
 
 </body>
 
-#macro( scenario $scenario)
+#macro( scenario $scenario )
   <div class='scenario-body'>
-    #set($ctr = 1)
     #foreach($step in $scenario.getSteps().toList())
       <div class='step'>
         <div class='row'>
@@ -423,37 +422,37 @@ body {
               <ul class="nav nav-pills">
                 #if ( $step.hasErrorMessage() )
                   <li class='active'>
-                    <a class='pill-error' href="#err-$ctr" data-toggle="tab">Error</a>
+                    <a class='pill-error' href="#err$ctr" data-toggle="tab">Error</a>
                   </li>
                 #end
                 #if ( $step.hasDocString())
                 <li #if (!$step.hasError())class='active'#end>
-                  <a href="#doc-$ctr" data-toggle="tab">DocString</a>
+                  <a href="#doc$ctr" data-toggle="tab">DocString</a>
                 </li>
                 #end
                 #if ( $step.hasOutput() )
                 <li
                   #if (!$step.hasDocString() && !$step.hasErrorMessage()) class='active'#end>
-                  <a href="#out-$ctr" data-toggle="tab">Output</a></li>
+                  <a href="#out$ctr" data-toggle="tab">Output</a></li>
                 #end
               </ul>
             <div class="tab-content">
               #if ( $step.hasDocString())
                 <div class="tab-pane active"
-                  id="doc-$ctr"><pre style='border: 1px solid
+                  id="doc$ctr"><pre style='border: 1px solid
 darkgreen'>$step.getDocStringOrNothing($ctr)</pre></div>
               #end
               #if ( $step.hasErrorMessage() )
                 <div 
                   class="tab-pane
-                  #if (!$step.hasDocString()) active#end" id="err-$ctr">
+                  #if (!$step.hasDocString()) active#end" id="err$ctr">
                   <pre style='border: 1px solid red'>$step.getErrorMessage()</pre>
                 </div>
               #end
               #if ( $step.hasOutput() )
                 <div class="tab-pane 
                   #if (!$step.hasDocString() && !$step.hasErrorMessage()) active#end" 
-                  id="out-$ctr"><pre>$step.getOutput()</pre></div>
+                  id="out$ctr"><pre>$step.getOutput()</pre></div>
               #end
             </div>
           </div>
