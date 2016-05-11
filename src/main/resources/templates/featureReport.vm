@@ -426,7 +426,7 @@ else to work.  See its use below. -->
                   </li>
                 #end
                 #if ( $step.hasDocString())
-                <li #if (!$step.hasError())class='active'#end>
+                <li #if (!$step.hasErrorMessage())class='active'#end>
                   <a href="#doc$ctr" data-toggle="tab">DocString</a>
                 </li>
                 #end
