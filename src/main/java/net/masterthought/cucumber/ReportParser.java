@@ -27,7 +27,8 @@ public class ReportParser {
         for (String jsonFile : jsonReportFiles) {
             String fileContent = Util.readFileAsString(jsonFile);
             if (Util.isValidCucumberJsonReport(fileContent)) {
-                Feature[] features = new Gson().fromJson(Util.U2U(fileContent), Feature[].class);
+                //Feature[] features = new Gson().fromJson(Util.U2U(fileContent), Feature[].class);
+                Feature[] features = new Gson().fromJson(fileContent, Feature[].class);
                 featureResults.put(jsonFile, Arrays.asList(features));
             }
         }
